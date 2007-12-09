@@ -1,0 +1,3 @@
+NemoVersion - A Nautilus svn client
+To start a new Nautilus instance without to logout use:
+$mkdir /tmp/nemoversion;export TMPDIR=/tmp/nemoversion;nautilus --no-desktop
