@@ -1,0 +1,1 @@
+#package nemoversion module init
