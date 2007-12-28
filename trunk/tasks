@@ -7,7 +7,7 @@ export TASK=$1
 function copy_nemoversion_plugin
 {
     if [ -e "${HOME}/.nautilus/python-extensions/" ]; then
-        echo "copying nemoversion plugin to ${HOME}/.nautilus/python-extensions/"
+        echo "Copying nemoversion plugin to ${HOME}/.nautilus/python-extensions/"
         cp ${NEMOVERSION_HOME}/src/nemoversionplugin.py ${HOME}/.nautilus/python-extensions/
     else
         echo "Cannot find ${HOME}/.nautilus/python-extensions/"
@@ -31,19 +31,40 @@ function new_nautilus_instance
     nautilus --no-desktop
 }
 
+function rm_pyc_files
+{
+    echo "Removing all python compiled files..."
+    find . -name "*.pyc" -exec rm '{}' ';'
+}
+
 #undo all envirioment changes
 function undo_all_env_changes
 {
     echo "Rolling back environment..."
+    rm_pyc_files
     rm ${HOME}/.nautilus/python-extensions/nemoversionplugin.py
     rm -Rf /tmp/nemoversion
 }
 
+function run_tests
+{
+    echo "Running unit tests..."
+    export PYTHONPATH=${NEMOVERSION_HOME}/src
+    python ${NEMOVERSION_HOME}/src/nemoversion/tests/test.py
+}
 
 if [[ $TASK == "clear" ]]; then
     undo_all_env_changes
-else
+    exit 0
+elif [[ $TASK == "pyc" ]]; then
+    rm_pyc_files
+    exit 0
+elif [[ $TASK == "run_tests" ]]; then
+    run_tests
+    exit 0
+elif [[ $TASK == "run" ]]; then
     make_nemoversion_bytecode
     copy_nemoversion_plugin
     new_nautilus_instance
+    exit 0
 fi

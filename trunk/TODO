@@ -4,3 +4,7 @@ system sketch
 
 -svn commands:
 up, st, ci, co, add
+
+-write a factory for activate (commands)
+
+-write a class to handle controlled files (svn - is it a dir? added? etc)
