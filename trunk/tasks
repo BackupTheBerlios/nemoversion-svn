@@ -53,6 +53,10 @@ function run_tests
     python ${NEMOVERSION_HOME}/src/nemoversion/tests/test.py
 }
 
+function show_usage
+{
+    echo "Usage: tasks clear | pyc | run_tests | run"
+}
 if [[ $TASK == "clear" ]]; then
     undo_all_env_changes
     exit 0
@@ -61,6 +65,9 @@ elif [[ $TASK == "pyc" ]]; then
     exit 0
 elif [[ $TASK == "run_tests" ]]; then
     run_tests
+    exit 0
+elif [[ $TASK == "help" ]]; then
+    show_usage
     exit 0
 elif [[ $TASK == "run" ]]; then
     make_nemoversion_bytecode

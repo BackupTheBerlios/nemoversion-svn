@@ -12,9 +12,10 @@ class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
     def __showInfo(self):
         print self
     
-    def __addMenuItem(self, item, description):
+    def __addMenuItem(self, file, item, description):
         """
         Add a item to menuItens (itens for file-menu and bg-menu)
+        param file: a FileInfo instance
         param item: menu label
         param description: menu description
         """
@@ -23,11 +24,10 @@ class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
         item.connect('activate', self.__actionFor(file, menuid), file)
         self.__menuItens.append(item)
     
-    #TODO: implement factory for __actionFor        
     def __actionFor(self, file, menuid):
         """
         Dynamically get an action for the given file.
-        param file: a simple python file type
+        param file: a FileInfo instance
         return: an activate action
         """
         actionFactory = factory.ActionFactory()
@@ -38,8 +38,9 @@ class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
         """
         Callback function for files
         param window:
-        param files: selected files
+        param files: selected files (list of FileInfo instances)
         """
+        print dir(files[0])
         return self.__menuItens
     
     def get_background_items(self, window, file):
