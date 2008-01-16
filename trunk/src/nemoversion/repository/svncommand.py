@@ -1,9 +1,9 @@
 import commands
 
 class Command(object):
-    def __init__(self):
+    def __init__(self, file):
         self.output = None
-        self.__file = None
+        self.__file = file
         
     def outputFormatedAsDict(self):
         return {"status":self.output[0], "output":self.output[1]}
@@ -11,25 +11,34 @@ class Command(object):
     def getFile(self):
         return self.__file.get_uri()[7:]
     
+    #TODO: remove this shit
     def setFile(self, value):
         self.__file = value
+        
+    def preExecute(self):
+        raise NotImplementedError
+    
+    def execute(self):
+        self.preExecute()
+        return self.outputFormatedAsDict()
+    
+    def __eq__(self, other):
+        sameFile = other.getFile() == self.getFile()
+        sameClass = other.__class__.__name__ == self.__class__.__name__
+        if  sameFile and sameClass:
+            return True
+        return False
     
     file = property(getFile, setFile)
-    
+
 class AddCommand(Command):
-    def execute(self, file):
-        self.file = file
+    def preExecute(self):
         self.output = commands.getstatusoutput("svn add " + self.file)
-        return self.outputFormatedAsDict()
 
 class RemoveCommand(Command):
-    def execute(self, file):
-        self.file = file
-        self.output = commands.getstatusoutput("svn rm " + self.file)
-        return self.outputFormatedAsDict()
+    def preExecute(self):
+        self.output = commands.getstatusoutput("svn remove " + self.file)
 
 class StatusCommand(Command):
-    def execute(self, file):
-        self.file = file
+    def preExecute(self):
         self.output = commands.getstatusoutput("svn status " + self.file)
-        return self.outputFormatedAsDict()

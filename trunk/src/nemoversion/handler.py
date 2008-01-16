@@ -1,7 +1,7 @@
 #main module for nemo version
 import nautilus
 import gconf
-from nemoversion.appcontroller import factory
+from nemoversion import appcontroller
 
 class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
     def __init__(self):
@@ -16,23 +16,22 @@ class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
         """
         Add a item to menuItens (itens for file-menu and bg-menu)
         param file: a FileInfo instance
-        param item: menu label
+        param item: menu label/id
         param description: menu description
         """
-        menuid = 'Nemoversion::%s_item' %item.replace(' ', '_')
+        menuid = 'Nemoversion::%s' %item.replace(' ', '_')
         item = nautilus.MenuItem(menuid, item, description)
-        item.connect('activate', self.__actionFor(file, menuid), file)
+        item.connect('activate', self.genericCallback(file, menuid), file)
         self.__menuItens.append(item)
     
-    def __actionFor(self, file, menuid):
+    def genericCallback(self, file, menuid):
         """
-        Dynamically get an action for the given file.
+        Execute an action for the given file.
         param file: a FileInfo instance
         return: an activate action
         """
-        actionFactory = factory.ActionFactory()
-        return actionFactory.createAction(file, menuId)
-        
+        cntrl = appcontroller.NemoversionController()
+        return cntrl.execute(file, menuid)
 
     def get_file_items(self, window, files):
         """
@@ -40,7 +39,6 @@ class NemoversionHandler(nautilus.MenuProvider, nautilus.InfoProvider):
         param window:
         param files: selected files (list of FileInfo instances)
         """
-        print dir(files[0])
         return self.__menuItens
     
     def get_background_items(self, window, file):

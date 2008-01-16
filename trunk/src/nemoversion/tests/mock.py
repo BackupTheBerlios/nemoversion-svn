@@ -23,3 +23,13 @@ class FileInfo:
     def get_uri(self):
         return "file://" + self.file
     
+class Command:
+    def __init__(self, file):
+        self.output = None
+        self.__file = file
+        
+    def getFile(self):
+        return self.__file.get_uri()[7:]
+        
+    
+    

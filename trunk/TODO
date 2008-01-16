@@ -1,15 +1,12 @@
-bash script (make/launch script)
-resources folder
-system sketch
+-Change command interfaces
+-Create the main controller
+-add tests (all interfaces)
 
 -svn commands:
 up, st, ci, co, add
 
--write a factory for activate (commands)
-
 -write a class to handle controlled files (svn - is it a dir? added? etc)
-
--svn dir and files problem (change to location object)
+This class must be a mix in (mix with file info)
 
 -create mock for FileInfo:
 ['__class__', '__cmp__', '__delattr__', '__dict__', '__doc__', '__gdoc__',
@@ -26,3 +23,9 @@ up, st, ci, co, add
 'invalidate_extension_info', 'is_directory', 'is_gone', 'is_mime_type',
 'notify', 'props', 'set_data', 'set_properties', 'set_property',
 'stop_emission', 'thaw_notify', 'weak_ref']
+
+-Views:
+
+-Repository Browser
+ -Input select box
+ 
