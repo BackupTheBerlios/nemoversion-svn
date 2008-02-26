@@ -1,18 +1,19 @@
 #!/bin/bash
 
-export NEMOVERSION_HOME="`pwd`";
-export TASK=$1
+NEMOVERSION_HOME="`pwd`";
+TASK=$1
 
 #copy nemoversion plugin to $HOME/.nautilus/python-extensions/
 function copy_nemoversion_plugin
 {
-    if [ -e "${HOME}/.nautilus/python-extensions/" ]; then
-        echo "Copying nemoversion plugin to ${HOME}/.nautilus/python-extensions/"
-        cp ${NEMOVERSION_HOME}/src/nemoversionplugin.py ${HOME}/.nautilus/python-extensions/
+    echo "Copying nemoversion plugin to ${HOME}/.nautilus/python-extensions/"
+    if [ -d "${HOME}/.nautilus/python-extensions/" ]; then        
+        echo "Directory ${HOME}/.nautilus/python-extensions/ found"
     else
-        echo "Cannot find ${HOME}/.nautilus/python-extensions/"
-        exit
+        echo "Cannot find ${HOME}/.nautilus/python-extensions/ , creating it"
+        mkdir "${HOME}/.nautilus/python-extensions/"
     fi
+    cp ${NEMOVERSION_HOME}/src/nemoversionplugin.py ${HOME}/.nautilus/python-extensions/
 }
 
 #make python bytecode for nemoversion (default to $NEMOVERSION_HOME/bin)
